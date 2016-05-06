@@ -1,0 +1,20 @@
+{
+  "name": "nodemongo",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "ping.liu <ping.liu@ihaveu.net>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
