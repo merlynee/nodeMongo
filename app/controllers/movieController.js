@@ -1,4 +1,5 @@
 var Movie = require('../models/movie')
+var Comment = require('../models/comment')
 var _ = require('underscore')
 
 
@@ -13,10 +14,34 @@ exports.detail = function(req,res){
 			console.log('err4:'+err);
 		}
 		else {
-			res.render('detail',{
-				title:'Movie:' + movie.title,
-				movie: movie
+			Comment
+				.find({movie:id})
+				.populate('from','name')
+				.populate('reply.from reply.to', 'name')
+				.exec(function(err,comment){
+				if(err){
+					console.log('commenterr:'+err);
+				}else{
+					res.render('detail',{
+					title:'Movie:' + movie.title,
+					movie: movie,
+					comments: comment
+					})
+				}
 			})
+			// Comment.find({movie:id},function(err,comment){
+			// 	if(err){
+			// 		console.log('commenterr:'+err);
+			// 	}else{
+			// 		console.log('comments: ' + comment.length);
+			// 		res.render('detail',{
+			// 		title:'Movie:' + movie.title,
+			// 		movie: movie,
+			// 		comments: comment
+			// 		})
+			// 	}
+			
+			// })
 		}
 	})
 }
@@ -94,7 +119,6 @@ exports.save = function(req,res){
 
 
 exports.list = function(req,res){
-	console.log('in here');
 	Movie.fetch(function (err,movies){
 		if(err)
 	 			console.log(err);

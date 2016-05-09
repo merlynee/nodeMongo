@@ -72,7 +72,7 @@ module.exports = function(grunt) {
           watchedExtensions: ['js'],
           watchedFolders: ['./'],
           debug: true,
-          delayTime: 1,
+          delayTime: 2,
           env: {
             PORT: 3000
           },

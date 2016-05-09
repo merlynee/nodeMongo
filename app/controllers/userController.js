@@ -6,10 +6,11 @@ var User = require('../models/user')
 //注册
 exports.signup = function(req,res){
 	var _user = req.body.user
+	console.log(_user.name);
 	User.findByName(_user.name,function(err,user){
 		if(err) console.log(err);
 		if(user) {
-			res.redirect('/user/list')
+			return res.redirect('/signup')
 		}else{
 			var user = new User(_user)
 			user.save(function(err,user){
@@ -34,7 +35,7 @@ exports.signin = function(req,res){
 	 			
  		if(!user){
  			console.log('no user,login failed');
- 			return res.redirect('/')
+ 			return res.redirect('/signup')
  		} 				
 		else{
 			user.comparePassword(_user.password,function(err,isMatched){
@@ -47,7 +48,7 @@ exports.signin = function(req,res){
 					return res.redirect('/')
  				}else{
  					console.log('login failed');
- 					return res.redirect('/user/list')
+ 					return res.redirect('/signin')
  				}
 			})
 		}
@@ -70,4 +71,33 @@ exports.list = function(req,res){
  			users : users
  		})
 	})
+}
+
+exports.showSignUp = function(req,res){
+		res.render('signup',{
+			title: '新用户注册'
+		})
+}
+
+exports.showSignIn = function(req,res){
+		res.render('signin',{
+			title: '用户登录'
+		})
+}
+
+
+exports.signinRequired = function(req,res,next){
+	var user = req.session.user
+	if(!user){
+		return res.redirect('/signin')
+	}
+	next()
+}
+
+exports.adminRequired = function(req,res,next){
+	var user = req.session.user
+	if(!user.role || user.role != 'admin'){
+		return res.redirect('/signin')
+	}
+	next()
 }

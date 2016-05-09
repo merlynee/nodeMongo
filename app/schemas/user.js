@@ -1,5 +1,4 @@
 var mongoos = require('mongoose')
-// var bcrypt = require('bcrypt')
 var bcrypt = require('bcrypt-nodejs')
 var SALT_WORK_FACTOR = 10
 
@@ -10,6 +9,12 @@ var UserSchema = mongoos.Schema({
 	},
 	password : {
 		type: String,
+	},
+
+	role:{
+		type: String,
+		enum: ['normal','vip','admin'],
+		default: 'normal'
 	},
 
 	meta:{

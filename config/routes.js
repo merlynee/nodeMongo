@@ -1,6 +1,7 @@
 var Index = require('../app/controllers/indexController')
 var User = require('../app/controllers/userController')
 var Movie = require('../app/controllers/movieController')
+var Comment = require('../app/controllers/commentController')
 var _ = require('underscore');
 
 
@@ -12,21 +13,29 @@ app.use(function(req,res,next){
 	next()
 })
 
+//index
 app.get('/',Index.index)
 
-app.get('/movie/new',Movie.newa)
-app.get('/movie/update/:id',Movie.update)
-app.post('/movie/new',Movie.save)
-app.get('/movie/list',Movie.list)
-app.delete('/movie/delete',Movie.del)
+
+//movie
+app.get('/movie/new',User.signinRequired, User.adminRequired,Movie.newa)
+app.get('/movie/update/:id',User.signinRequired, User.adminRequired,Movie.update)
+app.post('/movie/new',User.signinRequired, User.adminRequired,Movie.save)
+app.get('/movie/list',User.signinRequired, User.adminRequired, Movie.list)
+app.delete('/movie/delete',User.signinRequired, User.adminRequired,Movie.del)
 app.get('/movie/detail/:id',Movie.detail)
 
-
+//user
 app.post('/user/signup',User.signup)
 app.post('/user/signin',User.signin)
 app.get('/user/logout',User.logout)
-app.get('/user/list',User.list)
-// app.get('/signin',User.showSignin)
-// app.get('/signup',User.showSignup)
+app.get('/user/list',User.signinRequired, User.adminRequired,User.list)
+app.get('/signin',User.showSignIn)
+app.get('/signup',User.showSignUp)
+
+
+
+//comments
+app.post('/user/comment',User.signinRequired , Comment.save)
 
 }

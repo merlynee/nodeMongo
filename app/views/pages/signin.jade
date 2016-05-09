@@ -3,18 +3,15 @@ extends ../layout
 block content
 
 	.container
-	.row
-		.page-header
-			h1= title
-			small what's this
-		form(method="POST" ,action="/user/signin")
-			.modal-header 登录
-			.modal-body 
-				.form-group
-					label(for="signinName") 用户名
-					input#signupName.form-control(name="user[name]",type="text")
-				.form-group
-					label(for="signinPassword") 密码
-					input#signupPassword.form-control(name="user[password]",type="text")
-			.modal-footer
-				button.btn.btn-success(type="submit") 提交
+		.row
+			.col-md-7
+				form(method="POST" ,action="/user/signin")
+					.modal-body 
+						.form-group
+							label(for="signinName") 用户名 
+							input#signinName.form-control(name="user[name]",type="text")
+						.form-group
+							label(for="signinPassword") 密码
+							input#signinPassword.form-control(name="user[password]",type="text")
+					.modal-footer
+						button.btn.btn-success(type="submit") 提交
