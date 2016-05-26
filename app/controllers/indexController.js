@@ -1,6 +1,10 @@
 var Movie = require('../models/movie')
 
 exports.index = function(req,res){
+
+	console.log('debugbef');
+	debugger;
+	console.log('debugaft');
 	Movie.fetch(function(err,movies){
 		if(err){
 			console.log(err);

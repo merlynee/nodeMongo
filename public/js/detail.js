@@ -29,4 +29,4 @@ $(function() {
       }).appendTo('#commentForm')
     }
   })
-})
+})()
