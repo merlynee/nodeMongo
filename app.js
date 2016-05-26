@@ -23,6 +23,7 @@ app.use(expressSession({
 		url: dbURL
 		,collection: 'sessions'
 	}),
+	resave:false,
 	cookie: {maxAge : 1000 * 60 * 60 * 24 * 7}, //7天cookie
 	saveUninitialized: true 
 }))
