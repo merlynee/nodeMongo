@@ -107,7 +107,8 @@ exports.save = function(req,res){
 			year: movieObj.year,
 			poster: movieObj.poster,
 			summary: movieObj.summary,
-			flash: movieObj.flash
+			flash: movieObj.flash,
+			category: movieObj.category
 		})
 		_movie.save(function(err,movie){
 	 		if(err)
