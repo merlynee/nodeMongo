@@ -2,6 +2,7 @@ var Index = require('../app/controllers/indexController')
 var User = require('../app/controllers/userController')
 var Movie = require('../app/controllers/movieController')
 var Comment = require('../app/controllers/commentController')
+var Category = require('../app/controllers/categoryController')
 var _ = require('underscore');
 
 
@@ -37,5 +38,12 @@ app.get('/signup',User.showSignUp)
 
 //comments
 app.post('/user/comment',User.signinRequired , Comment.save)
+
+
+app.get('/category/list',User.signinRequired,User.adminRequired, Category.list)
+app.post('/category/new',User.signinRequired,User.adminRequired, Category.save)
+app.get('/category/new',User.signinRequired,User.adminRequired, Category.new)
+app.get('/category/update/:id',User.signinRequired,User.adminRequired, Category.update)
+app.delete('/category/delete',User.signinRequired, User.adminRequired,Category.del)
 
 }

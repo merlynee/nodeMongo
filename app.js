@@ -35,11 +35,6 @@ if('development' === app.get('env')){
 	// app.locals.pretty = true
 	mongoose.set('debug',true)
 }
-
-
 require('./config/routes')(app)
 app.listen(port)
-
 console.log('Server Started:' + port );
-
-

@@ -1,5 +1,6 @@
 var Movie = require('../models/movie')
 var Comment = require('../models/comment')
+var Category = require('../models/category')
 var _ = require('underscore')
 
 
@@ -48,19 +49,22 @@ exports.detail = function(req,res){
 
 exports.newa = function(req,res){
 
-	console.log('in news');
-	res.render('admin',{
-		title:'录入页',
-		movie:{
-			doctor: '',
-			country: '',
-			title: '',
-			year: '',
-			language: '',
-			flash: '',
-			summary: '',
-			poster: ''
-		}
+	Category.fetch(function(err,categories){
+		res.render('admin',{
+			title:'录入页',
+			categories : categories,
+			movie:{
+				doctor: '',
+				country: '',
+				title: '',
+				category:'',
+				year: '',
+				language: '',
+				flash: '',
+				summary: '',
+				poster: ''
+			}
+		})
 	})
 }
 
@@ -124,6 +128,7 @@ exports.list = function(req,res){
 		if(err)
 	 			console.log(err);
  		res.render('list',{
+			title: '电影列表',
  			movies : movies
  		})
 	})

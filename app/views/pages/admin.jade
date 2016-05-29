@@ -10,9 +10,11 @@ block content
 					.col-sm-10
 						input#inputTitle.form-control(type="text",name="movie[title]" ,value="#{movie.title}")
 				.form-group
-					label.col-sm-3.control-label(for="inputCategory") 分类
-					.col-sm-10
-						input#inputCategory.form-control(type="text",name="movie[category]" ,value="#{movie.category}")
+					label.col-sm-3.control-label 分类
+					each cat in categories
+						label.radio-inline
+							input(type="radio" ,name="movie[category]" ,value="cat._id")
+							|#{cat.name}
 				.form-group
 					label.col-sm-3.control-label(for="inputCountry") 国家
 					.col-sm-10

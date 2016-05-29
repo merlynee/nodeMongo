@@ -6,44 +6,22 @@ var Comment = require('../models/comment')
 var _ = require('underscore')
 
 
-exports.detail = function(req,res){
-    var id = req.params.id
-    if(!id.match(/^[0-9a-fA-F]{24}$/)){
-        console.log('err ID');
-        return;
-    }
-    Movie.findById(id, function(err,movie){
-        if(err){
-            console.log('err4:'+err);
-        }
-        else {
-            Comment
-                .find({movie:id})
-                .populate('from','name')
-                .populate('reply.from reply.to', 'name')
-                .exec(function(err,comment){
-                    if(err){
-                        console.log('commenterr:'+err);
-                    }else{
-                        res.render('detail',{
-                            title:'Movie:' + movie.title,
-                            movie: movie,
-                            comments: comment
-                        })
-                    }
-                })
-        }
-    })
-}
+//exports.detail = function(req,res){
+//    var id = req.params.id
+//    if(!id.match(/^[0-9a-fA-F]{24}$/)){
+//        console.log('err ID');
+//        return;
+//    }
+//    Category.findById(id, function(err,category){
+//
+//    })
+//}
 
-exports.newa = function(req,res){
+exports.new = function(req,res){
 
-    console.log('in news');
     res.render('category_admin',{
         title:'分类录入页',
-        category:{
-            category :''
-        }
+        category:{}
     })
 }
 
@@ -51,7 +29,7 @@ exports.newa = function(req,res){
 exports.update = function(req,res){
     var id = req.params.id
     if(id)
-        Category.findById(id,function(err,Category){
+        Category.findById(id,function(err,category){
             res.render('category_admin',{
                 title: '更新',
                 category :category
@@ -69,7 +47,7 @@ exports.save = function(req,res){
     var categoryObj = req.body.category
     var _category
 
-    if (id != 'undefined'){
+    if (id != 'undefined' && id != ''){
         Category.findById(id, function(err,category){
             if(err)
                 console.log('err1:'+err);
@@ -77,18 +55,19 @@ exports.save = function(req,res){
             _category.save(function(err,category){
                 if(err)
                     console.log('err2:'+err);
-                res.redirect('/movie/detail/' + category._id)
+                res.redirect('/category/list')
             })
         })
     }
     else{
+        categoryObj.movies=[]
         _category = new Category({
-            category: categoryObj
+            name: categoryObj.name
         })
         _category.save(function(err,category){
             if(err)
                 console.log('err3:'+err);
-            res.redirect('/category/detail/' + category._id)
+            res.redirect('/category/list')
         })
     }
 }
@@ -98,7 +77,8 @@ exports.list = function(req,res){
     Category.fetch(function (err,categories){
         if(err)
             console.log(err);
-        res.render('category_list',{
+        res.render('categories_list',{
+            title: '分类列表',
             categories : categories
         })
     })

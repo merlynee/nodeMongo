@@ -6,7 +6,7 @@ $(function() {
 
     $.ajax({
       type: 'DELETE',
-      url: '/movie/delete?id=' + id
+      url: '/category/delete?id=' + id
     })
     .done(function(results) {
       if (results.success === 1) {
