@@ -79,54 +79,53 @@ exports.update = function(req,res){
 
 //admin  post movie
 exports.save = function(req,res){
-	var id = req.body.movie._id
+	var movie_id = req.body.movie._id
 	var movieObj = req.body.movie
 	var _movie
 
-	if (id != 'undefined' && id != '' && id != undefined){
-		 Movie.findById(id, function(err,movie){
-		 	if(err)
-		 		console.log('err1:'+err);
-		 	_movie = _.extend(movie,movieObj)
-		 	_movie.save(function(err,movie){
-		 		if(err)
-		 			console.log('err2:'+err);
-	 			res.redirect('/movie/detail/' + movie._id)
-		 	})
-		 })
-	}
-	else{
-		_movie = new Movie(movieObj)
-		// delete _movie._id
-		var categoryId = _movie.category
+	//先存category
 
- 
-		_movie.save(function(err,movie){
-	 		if(err)
-	 			console.log('err3:'+err);
-			Category.findById(categoryId , function(err,category){
-				category.movies.push(movie._id)
-				category.save(function(err,category){
-					if(err)
-						console.log(err);
-					else
-						res.redirect('/movie/detail/' + movie._id)
+	var categoryother = req.body.categoryother
+	if(categoryother != ''){
+		Category.findOne({name:categoryother},function(err,category){
+			if(err)
+				console.log(err);
+			//新添加的自定义分类
+			if(!category){
+				var _category = new Category({name: categoryother})
+				_category.save(function(err,category){
+				if(err)
+					console.log(err)
+				saveMoviesByCategory(movieObj,category,res)
 				})
-			})
-	 	})
+			}
+			else{ //自定义分类之前就有
+				saveMoviesByCategory(movieObj,category,res)
+			}
+		})
+	}else{
+		Category.findById(movieObj.category,function(err,category){
+			saveMoviesByCategory(movieObj,category,res)
+		})
+
 	}
+
+
+
 }
 
 
 exports.list = function(req,res){
-	Movie.fetch(function (err,movies){
-		if(err)
-	 			console.log(err);
- 		res.render('list',{
-			title: '电影列表',
- 			movies : movies
- 		})
-	})
+	Movie.find({})
+		.populate('category','name')
+		.exec(function(err,movies){
+			if(err)
+				console.log(err);
+			res.render('list',{
+				title: '电影列表',
+				movies : movies
+			})
+		})
 }
 
 exports.del = function(req,res){
@@ -139,4 +138,49 @@ exports.del = function(req,res){
 				res.json({success:1})
 		})
 	}
+}
+
+
+function saveMoviesByCategory(movieObj,category,res){
+
+	var movie_id = movieObj._id
+	var _movie
+
+	if (movie_id != 'undefined' && movie_id != '' && movie_id != undefined){
+		Movie.findById(movie_id, function(err,movie){
+			if(err)
+				console.log('err1:'+err);
+			_movie = _.extend(movie,movieObj)
+			_movie.category = category._id
+			_movie.save(function(err,movie){
+				if(err)
+					console.log('err2:'+err);
+				saveMoviesToCategory(category,movie._id)
+				res.redirect('/movie/detail/' + movie._id)
+			})
+		})
+	}
+	else{
+		_movie = new Movie(movieObj)
+		_movie.category = category._id
+		_movie.save(function(err,movie){
+			if(err)
+				console.log('err3:'+err);
+			saveMoviesToCategory(category,movie._id)
+			res.redirect('/movie/detail/' + movie._id)
+		})
+	}
+
+
+
+}
+
+function saveMoviesToCategory(category,movieId){
+	category.movies.push(movieId)
+	category.save(function(err,category){
+		if(err)
+			console.log('err3:'+err);
+		else
+			console.log(category);
+	})
 }
