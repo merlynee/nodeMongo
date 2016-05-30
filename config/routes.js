@@ -39,11 +39,12 @@ app.get('/signup',User.showSignUp)
 //comments
 app.post('/user/comment',User.signinRequired , Comment.save)
 
-
+//category
 app.get('/category/list',User.signinRequired,User.adminRequired, Category.list)
 app.post('/category/new',User.signinRequired,User.adminRequired, Category.save)
 app.get('/category/new',User.signinRequired,User.adminRequired, Category.new)
 app.get('/category/update/:id',User.signinRequired,User.adminRequired, Category.update)
 app.delete('/category/delete',User.signinRequired, User.adminRequired,Category.del)
+app.get('/category/showmovie',Index.search)
 
 }
