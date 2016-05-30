@@ -10,7 +10,10 @@ exports.detail = function(req,res){
 		console.log('err ID');
 		return;
 	}
-	Movie.findById(id, function(err,movie){
+	Movie
+		.findOne({_id:id})
+		.populate('category','name')
+		.exec(function(err,movie){
 		if(err){
 			console.log('err4:'+err);
 		}
@@ -30,19 +33,6 @@ exports.detail = function(req,res){
 					})
 				}
 			})
-			// Comment.find({movie:id},function(err,comment){
-			// 	if(err){
-			// 		console.log('commenterr:'+err);
-			// 	}else{
-			// 		console.log('comments: ' + comment.length);
-			// 		res.render('detail',{
-			// 		title:'Movie:' + movie.title,
-			// 		movie: movie,
-			// 		comments: comment
-			// 		})
-			// 	}
-			
-			// })
 		}
 	})
 }
@@ -73,9 +63,12 @@ exports.update = function(req,res){
 	var id = req.params.id
 	if(id)
 		Movie.findById(id,function(err,movie){
-			res.render('admin',{
-				title: '更新',
-				movie: movie
+			Category.fetch(function(err,categories){
+				res.render('admin',{
+					title: '更新',
+					movie: movie,
+					categories : categories
+				})
 			})
 		})
 	else
@@ -90,7 +83,7 @@ exports.save = function(req,res){
 	var movieObj = req.body.movie
 	var _movie
 
-	if (id != 'undefined'){
+	if (id != 'undefined' && id != '' && id != undefined){
 		 Movie.findById(id, function(err,movie){
 		 	if(err)
 		 		console.log('err1:'+err);
@@ -103,21 +96,23 @@ exports.save = function(req,res){
 		 })
 	}
 	else{
-		_movie = new Movie({
-			doctor: movieObj.doctor,
-			title: movieObj.title,
-			country: movieObj.country,
-			language: movieObj.language,
-			year: movieObj.year,
-			poster: movieObj.poster,
-			summary: movieObj.summary,
-			flash: movieObj.flash,
-			category: movieObj.category
-		})
+		_movie = new Movie(movieObj)
+		// delete _movie._id
+		var categoryId = _movie.category
+
+ 
 		_movie.save(function(err,movie){
 	 		if(err)
 	 			console.log('err3:'+err);
- 			res.redirect('/movie/detail/' + movie._id)
+			Category.findById(categoryId , function(err,category){
+				category.movies.push(movie._id)
+				category.save(function(err,category){
+					if(err)
+						console.log(err);
+					else
+						res.redirect('/movie/detail/' + movie._id)
+				})
+			})
 	 	})
 	}
 }
