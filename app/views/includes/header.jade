@@ -1,8 +1,15 @@
 .container
 	.row
-		.page-header
+		.page-header.clearfix
 			h1= title
-			small what's this
+			.col-md-4
+				small what's this
+			.col-md-8
+				form(method='GET',action='/category/showmovie')
+					.input-group.col-sm-4.pull-right
+						input.form-control(type='text',name='q')
+						span.input-group-btn
+							button.btn.btn-default(type='submit') 搜索
 .navbar.navbar-default.navbar-fixed-bottom
 	.container
 		.navbar-header

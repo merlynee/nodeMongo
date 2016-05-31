@@ -2,6 +2,8 @@ var Movie = require('../models/movie')
 var Comment = require('../models/comment')
 var Category = require('../models/category')
 var _ = require('underscore')
+var fs = require('fs')
+var path = require('path')
 
 
 exports.detail = function(req,res){
@@ -18,6 +20,10 @@ exports.detail = function(req,res){
 			console.log('err4:'+err);
 		}
 		else {
+			Movie.update({_id:id},{$inc:{pv:1}},function(err){
+				if(err)
+					console.log(err)
+			})
 			Comment
 				.find({movie:id})
 				.populate('from','name')
@@ -83,6 +89,10 @@ exports.save = function(req,res){
 	var movieObj = req.body.movie
 	var _movie
 
+	if(req.poster){
+		movieObj.poster = req.poster
+	}
+
 	//先存category
 
 	var categoryother = req.body.categoryother
@@ -137,6 +147,27 @@ exports.del = function(req,res){
 			else
 				res.json({success:1})
 		})
+	}
+}
+
+exports.savedPoster = function(req,res,next){
+	var posterData = req.files.uploadPosterOther
+	var filePath = posterData.path
+	var originalName = posterData.originalFilename
+
+	if(originalName){
+		fs.readFile(filePath,function(err,data){
+			var timeStamp = Date.now()
+			var type = posterData.type.split('/')[1]
+			var postername = timeStamp + '.' + type
+			var newPath = path.join(__dirname,'../../public/upload/'+postername)
+			fs.writeFile(newPath ,data, function(err){
+				req.poster = postername
+				next()
+			})
+		})
+	}else{
+		next()
 	}
 }
 

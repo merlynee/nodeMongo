@@ -21,7 +21,7 @@ app.get('/',Index.index)
 //movie
 app.get('/movie/new',User.signinRequired, User.adminRequired,Movie.newa)
 app.get('/movie/update/:id',User.signinRequired, User.adminRequired,Movie.update)
-app.post('/movie/new',User.signinRequired, User.adminRequired,Movie.save)
+app.post('/movie/new',User.signinRequired, User.adminRequired,Movie.savedPoster,Movie.save)
 app.get('/movie/list',User.signinRequired, User.adminRequired, Movie.list)
 app.delete('/movie/delete',User.signinRequired, User.adminRequired,Movie.del)
 app.get('/movie/detail/:id',Movie.detail)

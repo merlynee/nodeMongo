@@ -10,12 +10,14 @@ var mongoStore = require('connect-mongo')(expressSession)
 var dbURL = 'mongodb://localhost/nodeMongo'
 var db = mongoose.connect(dbURL)
 var morgan = require('morgan')
+var muiltyparty = require('connect-multiparty')
 
 
 app.locals.moment = require('moment')
 app.set('views','./app/views/pages')
 app.set('view engine','jade')
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(muiltyparty())
 app.use(express.static(path.join(__dirname,'public')))
 app.use(expressSession({
 	secret : 'merlynee',

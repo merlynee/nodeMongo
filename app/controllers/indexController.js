@@ -1,5 +1,6 @@
 var Movie = require('../models/movie')
 var Category = require('../models/category')
+var Consts = require('../models/appconst')
 
 exports.index = function(req,res){
 	Category
@@ -20,31 +21,53 @@ exports.index = function(req,res){
 
 exports.search = function(req,res){
 
+	var q = req.query.q
 	var catID = req.query.cat
 	var page = req.query.p
-	var countPpage = 2
-	var index = page * countPpage
+	var index = page * Consts.MovieCountPerCategory || 0
 
-	Category
-		.findOne({_id : catID})
-		.populate({
-			path: 'movies',
-			select : 'title poster'
-		})
-		.exec(function (err,category){
-			if(err){
-				console.log(err);
-			}
-			else {
- 				var movies = category.movies || []
-				var results = movies.slice(index, index + countPpage)
-				res.render('category_search',{
-					keyWord : category.name || '' ,
-					title:'分类结果',
-					totlePage : Math.ceil( movies.length / countPpage),
-					currentPage : page,
-					movies:results
-				})
-			}
-		})
+	if(catID){
+		Category
+			.findOne({_id : catID})
+			.populate({
+				path: 'movies',
+				select : 'title poster'
+			})
+			.exec(function (err,category){
+				if(err){
+					console.log(err);
+				}
+				else {
+					var movies = category.movies || []
+					var results = movies.slice(index, index + Consts.MovieCountPerCategory)
+					res.render('search',{
+						keyWord : category.name || '' ,
+						query: 'cat=' +catID,
+						title:'分类结果',
+						totalPage : Math.ceil( movies.length / Consts.MovieCountPerCategory),
+						currentPage : page,
+						movies:results
+					})
+				}
+			})
+	}else {
+		Movie
+			.find({title: new RegExp('.*'+q+'.*','i')})
+			.exec(function (err, movies) {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					var results = movies.slice(index, index + Consts.MovieCountPerCategory)
+					res.render('search', {
+						keyWord: q,
+						query: 'q=' + catID,
+						title: '搜索结果',
+						totalPage: Math.ceil(movies.length / Consts.MovieCountPerCategory),
+						currentPage: page,
+						movies: movies
+					})
+				}
+			})
+	}
 }

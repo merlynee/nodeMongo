@@ -4,6 +4,10 @@ var MovieSchema = mongoos.Schema({
 	doctor: String,
 	title: String,
 	language: String,
+	pv:{
+		type:Number,
+		default:0
+	},
 	category: {
 		type: mongoos.Schema.Types.ObjectId,
 		ref: 'Category'

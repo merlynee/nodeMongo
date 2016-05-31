@@ -3,7 +3,7 @@ extends ../layout
 block content
 	.container
 		.row
-			form.form-horizontal(method="post",name="movie",action="/movie/new")
+			form.form-horizontal(method="post",name="movie",action="/movie/new" , enctype="multipart/form-data")
 				.form-group
 					label.col-sm-2.control-label 豆瓣同步
 					.col-sm-3
@@ -56,6 +56,10 @@ block content
 					label.col-sm-2.control-label(for="inputPoster") 海报
 					.col-sm-10
 						input#inputPoster.form-control(type="text",name="movie[poster]" ,value="#{movie.poster}")
+				.form-group
+					label.col-sm-2.control-label(for="inputPosterOther") 海报上传
+					.col-sm-10
+						input#inputPosterOther(type="file",name="uploadPosterOther")
 				.form-group
 					.col-sm-11.pull-right
 						input.form-control(type="submit")
