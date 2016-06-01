@@ -7,7 +7,7 @@ block content
     .container
         .row
             .panel.panel-default
-                .panel-heading
+                .panel-heading#keyword
                     h3 #{keyWord}
                 .panel-body
                     if movies && movies.length > 0
@@ -29,6 +29,7 @@ block content
                             span 第 #{i+1} 页
                     - }else{
                         li
-                            a(href='/category/showmovie?#{query}&p=#{i}') 第#{i+1}页
+                            a(href='/category/showmovie?#{query}&p=#{i}#keyword') 第#{i+1}页
                     - }
                 - }
+    script(src="/js/search.js")

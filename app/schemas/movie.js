@@ -1,6 +1,6 @@
 var mongoos = require('mongoose')
 
-var MovieSchema = mongoos.Schema({
+var MovieSchema = new mongoos.Schema({
 	doctor: String,
 	title: String,
 	language: String,

@@ -41,7 +41,6 @@ exports.save = function(req,res){
 	}else{
 		var comment = new Comment(_comment)
 		comment.from = req.session.user._id
-		console.log("from:"+comment.from);
 
 		comment.save(function(err,comment){
 			if(err){

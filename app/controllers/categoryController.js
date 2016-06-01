@@ -47,7 +47,7 @@ exports.save = function(req,res){
     var categoryObj = req.body.category
     var _category
 
-    if (id != 'undefined' && id != ''){
+    if (id !== 'undefined' && id !== '' && id !== undefined){
         Category.findById(id, function(err,category){
             if(err)
                 console.log('err1:'+err);

@@ -6,10 +6,13 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "connect-multiparty": "^2.0.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "grunt-contrib-jshint": "^1.0.0",
     "jade": "^1.11.0",
     "moment": "^2.13.0",
     "mongoose": "^4.4.12",
+    "morgan": "^1.7.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

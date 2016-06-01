@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
-var CommentSchema = Schema({
+var CommentSchema = new Schema({
 	movie:{
 		type: ObjectId,
 		ref: 'movie'

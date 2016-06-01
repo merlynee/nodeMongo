@@ -2,7 +2,7 @@ var mongoos = require('mongoose')
 var bcrypt = require('bcrypt-nodejs')
 var SALT_WORK_FACTOR = 10
 
-var UserSchema = mongoos.Schema({
+var UserSchema = new mongoos.Schema({
 	name: {
 		type: String,
 		unique: true

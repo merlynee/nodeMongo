@@ -6,6 +6,7 @@ var fs = require('fs')
 var path = require('path')
 
 
+
 exports.detail = function(req,res){
 	var id = req.params.id
 	if(!id.match(/^[0-9a-fA-F]{24}$/)){
@@ -96,7 +97,7 @@ exports.save = function(req,res){
 	//先存category
 
 	var categoryother = req.body.categoryother
-	if(categoryother != ''){
+	if(categoryother !== ''){
 		Category.findOne({name:categoryother},function(err,category){
 			if(err)
 				console.log(err);
@@ -177,7 +178,7 @@ function saveMoviesByCategory(movieObj,category,res){
 	var movie_id = movieObj._id
 	var _movie
 
-	if (movie_id != 'undefined' && movie_id != '' && movie_id != undefined){
+	if (movie_id !== 'undefined' && movie_id !== '' && movie_id !== undefined){
 		Movie.findById(movie_id, function(err,movie){
 			if(err)
 				console.log('err1:'+err);
@@ -201,9 +202,6 @@ function saveMoviesByCategory(movieObj,category,res){
 			res.redirect('/movie/detail/' + movie._id)
 		})
 	}
-
-
-
 }
 
 function saveMoviesToCategory(category,movieId){

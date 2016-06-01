@@ -10,25 +10,11 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['public/js/**', 'models/**/*.js', 'schemas/**/*.js'],
-        //tasks: ['jshint'],
+        tasks: ['jshint'],
         options: {
           livereload: true
         }
       },
-      // uglify: {
-      //   files: ['public/**/*.js'],
-      //   tasks: ['jshint'],
-      //   options: {
-      //     livereload: true
-      //   }
-      // },
-      // styles: {
-      //   files: ['public/**/*.less'],
-      //   tasks: ['less'],
-      //   options: {
-      //     nospawn: true
-      //   }
-      // }
     },
 
     jshint: {
@@ -38,20 +24,6 @@ module.exports = function(grunt) {
       },
       all: ['public/js/*.js', 'test/**/*.js', 'app/**/*.js']
     },
-
-    // less: {
-    //   development: {
-    //     options: {
-    //       compress: true,
-    //       yuicompress: true,
-    //       optimization: 2
-    //     },
-    //     files: {
-    //       'public/build/index.css': 'public/less/index.less'
-    //     }
-    //   }
-    // },
-
     // uglify: {
     //   development: {
     //     files: {
@@ -80,13 +52,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
-    // mochaTest: {
-    //   options: {
-    //     reporter: 'spec'
-    //   },
-    //   src: ['test/**/*.js']
-    // },
     mochaTest:{
       options:{
         reporter:'spec'
@@ -95,7 +60,7 @@ module.exports = function(grunt) {
     },
 
     concurrent: {
-      tasks: ['nodemon', 'watch'],
+      tasks: ['jshint','nodemon', 'watch'],
       options: {
         logConcurrentOutput: true
       }
@@ -105,15 +70,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-nodemon')
   grunt.loadNpmTasks('grunt-concurrent')
-  grunt.loadNpmTasks('grunt-mocha-test')
-  // grunt.loadNpmTasks('grunt-contrib-less')
   // grunt.loadNpmTasks('grunt-contrib-uglify')
-  // grunt.loadNpmTasks('grunt-contrib-jshint')
+  grunt.loadNpmTasks('grunt-contrib-jshint')
 
   grunt.option('force', true)
 
   grunt.registerTask('default', ['concurrent'])
-  grunt.registerTask('test', ['mochaTest'])
 
-  // grunt.registerTask('test', ['mochaTest'])
 }

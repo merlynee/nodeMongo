@@ -12,7 +12,7 @@ exports.signup = function(req,res){
 		if(user) {
 			return res.redirect('/signup')
 		}else{
-			var user = new User(_user)
+			user = new User(_user)
 			user.save(function(err,user){
 			if(err) console.log(err);
 				console.log(user);
@@ -96,7 +96,7 @@ exports.signinRequired = function(req,res,next){
 
 exports.adminRequired = function(req,res,next){
 	var user = req.session.user
-	if(!user.role || user.role != 'admin'){
+	if(!user.role || user.role !== 'admin'){
 		return res.redirect('/signin')
 	}
 	next()

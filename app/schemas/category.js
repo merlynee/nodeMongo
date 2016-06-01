@@ -2,7 +2,7 @@ var mongoos = require('mongoose')
 
 var ObjectId = mongoos.Schema.Types.ObjectId
 
-var CategorySchema = mongoos.Schema({
+var CategorySchema = new mongoos.Schema({
 	name: String,
 	movies:[{type: ObjectId , ref : 'Movie'}],
 	meta:{
